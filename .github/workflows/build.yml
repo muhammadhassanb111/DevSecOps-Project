@@ -37,9 +37,9 @@ jobs:
         run: |
           #run commands to build and push docker images
           docker build --build-arg TMDB_V3_API_KEY=cc43e68ccd7edc1f4cbe88e891ad7059 -t netflix .
-          docker tag netflix hassanb111/netflix:latest
+          docker tag netflix hassanb111/netflix:${{ github.sha }}
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push hassanb111/netflix:latest  
+          docker push hassanb111/netflix:${{ github.sha }}
         env:
           DOCKER_CLI_ACI: 1     
 
@@ -48,8 +48,8 @@ jobs:
     runs-on: [aws-netflix]  
     steps:
       - name: Pull the docker image
-        run: docker pull hassanb111/netflix:latest
+        run: docker pull hassanb111/netflix:${{ github.sha }}
       - name: Trivy image scan
-        run: trivy image hassanb111/netflix:latest
+        run: trivy image hassanb111/netflix:${{ github.sha }}
       - name: Run the container netflix
-        run: docker run -d --name netflix -p 8081:80 hassanb111/netflix:latest
+        run: docker run -d --name netflix -p 8081:80 hassanb111/netflix:${{ github.sha }}
