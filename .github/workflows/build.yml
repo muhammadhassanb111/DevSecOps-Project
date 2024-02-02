@@ -49,7 +49,7 @@ jobs:
     steps:
       - name: Pull the docker image
         run: docker pull hassanb111/netflix:${{ github.sha }}
-      - name: Trivy image scan
+      - name: Trivy image scans
         run: trivy image hassanb111/netflix:${{ github.sha }}
       - name: Run the container netflix
         run: docker run -d --name netflix -p 8081:80 hassanb111/netflix:${{ github.sha }}
